@@ -7,6 +7,7 @@ import (
 
 	cart "github.com/burubur/fastcampus/cart/service"
 	"github.com/burubur/fastcampus/cart/service/mock"
+	"github.com/burubur/fastcampus/cart/service/stub"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"
 )
@@ -31,5 +32,13 @@ func TestShoppingCart_AddItemToCart_Success(t *testing.T) {
 
 	scs := cart.New(repositoryMock)
 	err := scs.AddItemToCart(context.Background(), "user-2", "product-b")
+	assert.NoError(t, err, "it should not return any error")
+}
+
+// Simulating interface on dependency with a Stub
+func TestShoppingCart_AddItemToCart_Success_WithStub(t *testing.T) {
+	repositoryStub := stub.NewRepositoryStub()
+	scs := cart.New(repositoryStub)
+	err := scs.AddItemToCart(context.Background(), "user-3", "product-c")
 	assert.NoError(t, err, "it should not return any error")
 }
