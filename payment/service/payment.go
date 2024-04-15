@@ -11,6 +11,8 @@ type Payment struct {
 func (p *Payment) Pay() error {
 	// create transaction ID
 	// insert into PostgreSQL
+	// construct payment request payload
+	// run complete payment request validation logic
 	// call third party API
 	_, err := p.xendit.SendPaymentRequest()
 	if err != nil {
