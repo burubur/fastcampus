@@ -1,4 +1,4 @@
-package repository_test
+package xendit_test
 
 import (
 	"context"
@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/burubur/fastcampus/payment/repository"
-	"github.com/burubur/fastcampus/payment/repository/mock"
+	"github.com/burubur/fastcampus/payment/repository/thirdparty/xendit"
+	"github.com/burubur/fastcampus/payment/repository/thirdparty/xendit/mock"
 	"github.com/burubur/fastcampus/payment/vo"
 	"github.com/stretchr/testify/suite"
 	"go.uber.org/mock/gomock"
@@ -17,7 +17,7 @@ type XenditPaymentTestSuite struct {
 	suite.Suite
 	ctx            context.Context
 	httpClientMock *mock.MockHttpConector
-	xenditClient   repository.XenditPayment
+	xenditClient   xendit.XenditPayment
 	xenditHost     string
 	xenditAuthKey  string
 }
@@ -34,7 +34,7 @@ func (s *XenditPaymentTestSuite) SetupSuite() {
 	s.xenditHost = "http://mock.server"
 	s.xenditAuthKey = "supersecret"
 
-	xenditClient := repository.NewXenditClient(httpClientMock, s.xenditHost, s.xenditAuthKey)
+	xenditClient := xendit.NewXenditClient(httpClientMock, s.xenditHost, s.xenditAuthKey)
 
 	s.httpClientMock = httpClientMock
 	s.xenditClient = xenditClient
@@ -48,7 +48,7 @@ func (s *XenditPaymentTestSuite) TestXenditPayment_SendPaymentRequest_EmptyAuthH
 	httpClientMock := mock.NewMockHttpConector(gomock.NewController(s.T()))
 	host := "http://mock.server"
 	authKey := ""
-	xenditClient := repository.NewXenditClient(httpClientMock, host, authKey)
+	xenditClient := xendit.NewXenditClient(httpClientMock, host, authKey)
 	ctx := context.Background()
 	_, err := xenditClient.SendPaymentRequest(ctx, vo.XenditPaymentRequest{})
 	s.Error(err, "it should return error due to empty auth key")

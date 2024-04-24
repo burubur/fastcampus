@@ -1,4 +1,4 @@
-package repository
+package xendit
 
 import "net/http"
 

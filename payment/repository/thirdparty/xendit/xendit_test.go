@@ -1,11 +1,10 @@
-package repository
+package xendit
 
 import (
 	"context"
-	"net/http"
 	"testing"
 
-	"github.com/burubur/fastcampus/payment/repository/mock"
+	"github.com/burubur/fastcampus/payment/repository/thirdparty/xendit/mock"
 	"github.com/burubur/fastcampus/payment/vo"
 	"go.uber.org/mock/gomock"
 )
@@ -28,23 +27,21 @@ import (
 // Edge cases
 // TODO: find the edge cases
 
-func TestXenditPayment_SendPaymentRequest_APIExploration(t *testing.T) {
-	httpClient := &http.Client{}
-	hostName := "https://api.xendit.co"
-	// apiKey := "something"
-	authKey := "eG5kX2RldmVsb3BtZW50X09vbUFmT1V0aCtHb3dzWTZMZUpPSHpMQ1p0U2o4NEo5a1hEbitSeGovbUhXK2J5aERRVnhoZz09Og=="
-	xenditClient := NewXenditClient(httpClient, hostName, authKey)
+// func TestXenditPayment_SendPaymentRequest_APIExploration(t *testing.T) {
+// 	httpClient := &http.Client{}
+// 	hostName := "https://api.xendit.co"
+// 	xenditClient := NewXenditClient(httpClient, hostName, "")
 
-	ctx := context.Background()
-	paymentID, err := xenditClient.SendPaymentRequest(ctx, vo.XenditPaymentRequest{})
-	if err != nil {
-		t.Fatalf("it should not return any error, but got: %s", err.Error())
-	}
+// 	ctx := context.Background()
+// 	paymentID, err := xenditClient.SendPaymentRequest(ctx, vo.XenditPaymentRequest{})
+// 	if err != nil {
+// 		t.Fatalf("it should not return any error, but got: %s", err.Error())
+// 	}
 
-	if paymentID == "" {
-		t.Errorf("it should not return empty paymentID, but got: %s", paymentID)
-	}
-}
+// 	if paymentID == "" {
+// 		t.Errorf("it should not return empty paymentID, but got: %s", paymentID)
+// 	}
+// }
 
 func TestXenditPayment_SendPaymentRequest_EmptyAuthHeader(t *testing.T) {
 	httpClientMock := mock.NewMockHttpConector(gomock.NewController(t))
