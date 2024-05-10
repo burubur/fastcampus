@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestDistance(t *testing.T) {
+func TestHaversine(t *testing.T) {
 	type args struct {
 		lat1 float64
 		lon1 float64
@@ -42,8 +42,20 @@ func TestDistance(t *testing.T) {
 	}
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			got := geo.Distance(tc.args.lat1, tc.args.lon1, tc.args.lat2, tc.args.lon2)
+			got := geo.Haversine(tc.args.lat1, tc.args.lon1, tc.args.lat2, tc.args.lon2)
 			assert.GreaterOrEqual(t, got, tc.want, "the distance should be greater or equal the expected number")
 		})
+	}
+}
+
+func BenchmarkHaversine(b *testing.B) {
+	for i := 0; i < 1000; i++ {
+		geo.Haversine(-6.176421464109725, 106.8230166265814, -6.136538249584232, 106.81373546121458)
+	}
+}
+
+func BenchmarkSphericalLawOfCosines(b *testing.B) {
+	for i := 0; i < 1000; i++ {
+		geo.SphericalLawOfCosines(-6.176421464109725, 106.8230166265814, -6.136538249584232, 106.81373546121458)
 	}
 }
