@@ -24,8 +24,12 @@ type CartData struct {
 
 func (c Cache) AddToCart(ctx context.Context, userID string, productID string) error {
 	cacheKey := fmt.Sprintf("cart-%s", userID)
-	cacheValues := CartData{
-		ProductID: productID,
+	cacheValues := map[string]interface{}{
+		"id":          productID,
+		"name":        "Sepatu lokal dari UMKM",
+		"description": "loremipsum",
+		"color":       "black",
+		"size":        "41",
 	}
 	err := c.cacher.HSet(ctx, cacheKey, cacheValues).Err()
 	if err != nil {
