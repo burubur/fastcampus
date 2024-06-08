@@ -2,18 +2,26 @@ package main
 
 import (
 	"fmt"
-	"time"
+	"sync"
 )
 
 func main() {
-	fmt.Println("Halo, dari main 1")
-	go sayHello()
-	fmt.Println("Halo, dari main 2")
+	var wg sync.WaitGroup
 
-	time.Sleep(time.Second * 5)
-	fmt.Println("Halo, dari main 3")
+	wg.Add(1)
+	go printNumbers(1, &wg)
+
+	wg.Add(1)
+	go printNumbers(2, &wg)
+
+	wg.Wait()
+	fmt.Println("program selesai")
 }
 
-func sayHello() {
-	fmt.Println("Halo, dari GoRoutine")
+func printNumbers(jobID int, wg *sync.WaitGroup) {
+	for i := 1; i <= 5; i++ {
+		fmt.Printf("job id: %d, menjalankan task %d\n", jobID, i)
+	}
+
+	wg.Done()
 }
