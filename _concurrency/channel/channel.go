@@ -7,25 +7,20 @@ import (
 
 func Demo() {
 	fmt.Println("program dijalankan...")
-	// flow:
-	// buatkan channel - done
-	// buatkan penerima data lewat channel, async - done
-	// buatkan pengirim data lewat channel, async - done
-	// tunggu sampai program selesai - done
 
-	messageCH := make(chan string)
+	messageCH := make(chan string, 2)
 
 	go func() {
-		for i := 1; i <= 5; i++ {
-			messageData := <-messageCH
-			fmt.Println(messageData)
-			time.Sleep(500 * time.Millisecond)
+		for i := 1; i <= 12; i++ {
+			fmt.Printf("data ke: %d dikirim\n", i)
+			messageCH <- fmt.Sprintf("data dari goroutine ke: %d", i)
 		}
 	}()
 
 	go func() {
-		for i := 1; i <= 5; i++ {
-			messageCH <- "Ini adalah pesan dari goroutine."
+		for {
+			messageData := <-messageCH
+			fmt.Printf("data diterima: %s\n", messageData)
 		}
 	}()
 
